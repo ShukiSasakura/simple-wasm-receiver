@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::io::Write;
+use std::io::{Read, Write};
 use std::net::TcpStream;
 
 #[derive(Parser, Debug)]
@@ -24,13 +24,17 @@ fn main() -> std::io::Result<()>{
     };
 
     let mut msg: [u8; 1024] = [1; 1024];
+    let mut ack: [u8; 1024] = [0; 1024];
 
     for i in 1..=msg_num {
         if i == msg_num {
             msg[0] = 2;
         }
         // send msg
-        let _ = stream.write(& msg);
+        let _ = stream.write_all(& msg);
+
+        // receive ack
+        let _ = stream.read_exact(&mut ack);
     }
 
     stream.flush().unwrap();

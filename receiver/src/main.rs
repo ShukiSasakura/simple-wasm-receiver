@@ -1,4 +1,4 @@
-use std::io::Read;
+use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::time::{Duration, Instant};
 
@@ -33,10 +33,15 @@ fn receive_msg(mut stream: TcpStream, start_time: &Instant) -> std::io::Result<(
     loop{
         let mut msg: [u8; 1024] = [0; 1024];
 
+        // receive message
         let _ = stream.read_exact(&mut msg);
         let elapsed_time = start_time.elapsed();
         let received_time = elapsed_time.as_nanos() as u64;
         records.push(received_time);
+
+        // send ack
+        let ack: [u8; 1024] = msg;
+        let _ = stream.write_all(&ack);
 
         if msg[0] == 2 {
             break
