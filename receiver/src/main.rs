@@ -23,7 +23,6 @@ fn main() -> std::io::Result<()> {
 
 fn accept(listener: &TcpListener) -> std::io::Result<TcpStream> {
     let (stream, _) = listener.accept()?;
-    stream.set_nodelay(true)?;
     Ok(stream)
 }
 
