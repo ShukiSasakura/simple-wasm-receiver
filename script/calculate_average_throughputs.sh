@@ -3,6 +3,10 @@
 TOP_DIR=$( dirname $0 )
 LOG_DIRS=$( echo "$1" | sed "s/\/$//" )
 
+if [ -f "$LOG_DIRS/throughput_average.stat" ]; then
+    rm -f $LOG_DIRS/throughput_average.stat
+fi
+
 directories=$( ls $LOG_DIRS/ )
 
 echo "throughput" > $LOG_DIRS/throughput_average.stat

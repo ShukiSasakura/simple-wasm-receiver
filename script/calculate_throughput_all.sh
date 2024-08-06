@@ -3,6 +3,10 @@
 TOP_DIR=$( dirname $0 )
 LOG_DIR=$( echo "$1" | sed "s/\/$//" )
 
+if [ -f "$LOG_DIR/throughput.stat" ]; then
+    rm -f $LOG_DIR/throughput.stat
+fi
+
 for logfile in $( ls $LOG_DIR/*.log )
 do
     logfile_name=$( basename $logfile )
