@@ -9,12 +9,13 @@ WASM_RECEIVER="$TOPDIR/../receiver/target/wasm32-wasmer-wasi/release/receiver.wa
 usage() {
     echo "Usage: test.sh -s N [-c N]"
     echo " -c N Number of messages (default:100000)"
-    echo " -s N Number of sender process"
+    echo " -s N Number of sender process (default:40)"
     echo " -w   Run receiver with wasmer"
 }
 
 # set default values
 OPT_N_MESSAGES=100000
+OPT_N_SENDERS=40
 OPT_WASMER_FLAG=0
 
 args=$(getopt -o c:hs:w -- "$@") || exit 1

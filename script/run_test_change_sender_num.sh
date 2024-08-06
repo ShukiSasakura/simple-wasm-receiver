@@ -7,12 +7,13 @@ date=$(date +"%Y%m%d-%H%M%S")
 usage() {
     echo "Usage: test.sh -s N [-c N]"
     echo " -c N Base number of messages (default:100000)"
-    echo " -s N Max number of sender process"
+    echo " -s N Max number of sender process (default:40)"
     echo " -w   Run receiver with wasmer"
 }
 
 # set default values
 OPT_N_MESSAGES_BASE=100000
+OPT_N_SENDERS=40
 OPT_WASMER_FLAG=0
 
 args=$(getopt -o c:hs:w -- "$@") || exit 1
