@@ -7,7 +7,7 @@ directories=$( ls $LOG_DIRS/ )
 
 echo "throughput" > $LOG_DIRS/throughput_average.stat
 
-for i in $( seq 2 40 )
+for i in $( seq 2 41 )
 do
     sum=0
 
