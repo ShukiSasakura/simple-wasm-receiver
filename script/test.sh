@@ -7,9 +7,9 @@ WASM_RECEIVER="$TOPDIR/../receiver/target/wasm32-wasmer-wasi/release/receiver.wa
 
 # parse option
 usage() {
-    echo "Usage: test.sh -s N [-c N]"
+    echo "Usage: test.sh [-c N] [-s M] [-w]"
     echo " -c N Number of messages (default:10000)"
-    echo " -s N Number of sender process (default:40)"
+    echo " -s M Number of sender process (default:40)"
     echo " -w   Run receiver with wasmer"
 }
 
