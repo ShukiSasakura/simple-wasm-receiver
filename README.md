@@ -2,7 +2,7 @@
 The effect of the number of Wasmer threads on performance is not much different from native when only CPU processing is performed, but when communication processing is included, the performance does not increase linearly.
 This program for explaining this phenomenon.
 
-![throughput ratio graph](https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/throughput-ratio.png)
+<img src="https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/throughput-ratio.png" width="40%">
 
 ## Programs
 | Directory Name | Description |
