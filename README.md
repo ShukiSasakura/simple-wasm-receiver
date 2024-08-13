@@ -15,6 +15,8 @@ This program for explaining this phenomenon.
 + Continuously send TCP packets to receiver while increasing sender from 1 to 40
 + Receiver invokes dedicaded thread for each sender and receive TCP packets (messages)
 
+<img src="https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/simple-wasm-receiver.png" width="40%">
+
 ## Requirements
 1. Rust
 2. Wasmer
