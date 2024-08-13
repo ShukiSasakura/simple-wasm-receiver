@@ -1,18 +1,26 @@
-Program for comparing thread performance between native and wasm programs
+#### Benchmark programs for comparing thread network performance between native and Wasmer
+The effect of the number of Wasmer threads on performance is not much different from native when only CPU processing is performed, but when communication processing is included, the performance does not increase linearly.
+This program for explaining this phenomenon.
 
-## Program
+![throughput ratio graph](https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/throughput-ratio.png)
+
+## Programs
 | Directory Name | Description |
 |:---------------|:------------|
 | receiver       | A program that receives messages and returns acks |
 | script         | Scripts for performance measurement |
 | sender         | A program that send messages and receive acks |
 
+## Description for Programs
++ Continuously send TCP packets to receiver while increasing sender from 1 to 40
++ Receiver invokes dedicaded thread for each sender and receive TCP packets (messages)
+
 ## Requirements
 1. Rust
 2. Wasmer
 3. WASIX
 
-## Measurement procedure
+## How to perform benchmark
 1. Clone this repository
 ```
 $ git clone git@github.com:ShukiSasakura/simple-wasm-receiver.git
@@ -28,12 +36,12 @@ $ cargo wasix build --release
 $ cd ../sender
 $ cargo build --release
 ```
-4. Start performance measurement
+4. Invoke benchmark programs
 ```
 $ cd ../script
-# start performance measurement of native implementation
+# invoke benchmark programs of native implementation
 $ ./run_test_change_sender_num.sh
-# start performance measurement of wasm implementation
+# invoke benchmark programs of wasm implementation
 $ ./run_test_change_sender_num.sh -w
 ```
 5. Calculate throughput
