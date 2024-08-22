@@ -36,14 +36,14 @@ x = np.arange(len(sender_num_label))
 fig, ax = plt.subplots(layout='constrained')
 
 df_native_ratio.plot(y='throughput', x=x, ax=ax, label="Native", marker='o', color='red')
-df_wasm_ratio.plot(y='throughput', x=x, ax=ax, label="Wasm", marker='^', color='green')
+df_wasm_ratio.plot(y='throughput', x=x, ax=ax, label="Wasmer", marker='^', color='green')
 
 h1, l1 = ax.get_legend_handles_labels()
 
 ax.grid()
 ax.set_axisbelow(True)
 
-ax.set_xlabel('Sender num')
+ax.set_xlabel('Sender num (Thread num)')
 ax.set_ylabel('Throughput ratio')
 
 ax.set_xticks(x, sender_num_label)
