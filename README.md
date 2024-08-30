@@ -1,8 +1,18 @@
 #### Benchmark programs for comparing thread network performance between native and Wasmer
 The effect of the number of Wasmer threads on performance is not much different from native when only CPU processing is performed, but when communication processing is included, the performance does not increase linearly.
-This program for explaining this phenomenon.
+This program is explaining this phenomenon.
 
 <img src="https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/throughput-ratio.png" width="40%">
+
+This figure shows the ratio of throughput when the benchmark was run with each thread count from 1 to 40 to the throughput with a thread count of 1.
+
+This program continuously sends TCP packets to the receiver while increasing the number of senders from 1 to 40.
+The receiver creates a dedicated thread for each sender.
+The throughput (msg/s) is calculated from the time from the first message received to the last message received.
+
+The benchmark conditions are as follows:
++ Increase the number of senders from 1 to 40
++ For measurements with each number of senders, send 10,000 messages to the receiver
 
 ## Programs
 | Directory Name | Description |
@@ -38,27 +48,47 @@ $ cargo wasix build --release
 $ cd ../sender
 $ cargo build --release
 ```
-4. Invoke benchmark programs
+4. Prepare directories for logs
 ```
-$ cd ../script
+$ cd ..
+$ mkdir log
+$ mkdir log/native
+$ mkdir log/wasm
+```
+5. Invoke benchmark programs
+```
+# kill receiver process if receiver process is running
+$ killall receiver
+$ killall wasmer
+
 # invoke benchmark programs of native implementation
-$ ./run_test_change_sender_num.sh
+# When you run this program, the following directories and  files are output:
+# log/native/LOG_DIR/
+# 40 log files
+$ ./script/test_native.sh
+
 # invoke benchmark programs of wasm implementation
-$ ./run_test_change_sender_num.sh -w
+# When you run this program, the following directories and  files are output:
+# log/wasm/LOG_DIR/
+# 40 log files
+$ ./script/test_wasmer.sh
+
+# LOG_DIR format: YearMonthDate-HourMinuteSecond
+# example: 20240807-143627
 ```
-5. Calculate throughput
+6. Calculate throughput
 ```
 $ ./calculate_throughput_all.sh ../log/native/LOG_DIR
 $ ./calculate_throughput_all.sh ../log/wasm/LOG_DIR
 # LOG_DIR format: YearMonthDate-HourMinuteSecond
 # example: 20240807-143627
 ```
-6. ( Calculate average throughputs in LOG_DIRs )
+7. ( Calculate average throughputs in LOG_DIRs )
 ```
 $ ./calculate_average_throughputs.sh ../log/native/
 $ ./calculate_average_throughputs.sh ../log/wasm/
 ```
-7. Make ratio graph
+8. Make ratio graph
 
 make a graph of the logs in a single measurement
 ```
