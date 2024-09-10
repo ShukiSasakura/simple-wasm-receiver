@@ -5,14 +5,13 @@ This program is explaining this phenomenon.
 <img src="https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/throughput-ratio.png" width="40%">
 
 This figure shows the ratio of throughput when the benchmark was run with each thread count from 1 to 40 to the throughput with a thread count of 1.
+The conditions are as follows:
++ Increase the number of senders from 1 to 40
++ For measurements with each number of senders, send 10,000 messages to the receiver
 
 This program continuously sends TCP packets to the receiver while increasing the number of senders from 1 to 40.
 The receiver creates a dedicated thread for each sender.
 The throughput (msg/s) is calculated from the time from the first message received to the last message received.
-
-The benchmark conditions are as follows:
-+ Increase the number of senders from 1 to 40
-+ For measurements with each number of senders, send 10,000 messages to the receiver
 
 ## Programs
 | Directory Name | Description |
@@ -21,11 +20,11 @@ The benchmark conditions are as follows:
 | script         | Scripts for performance measurement |
 | sender         | A program that send messages and receive acks |
 
-## Description for Programs
-+ Continuously send TCP packets to receiver while increasing sender from 1 to 40
-+ Receiver invokes dedicaded thread for each sender and receive TCP packets (messages)
+<!-- ## Description for Programs -->
+<!-- + Continuously send TCP packets to receiver while increasing sender from 1 to 40 -->
+<!-- + Receiver invokes dedicaded thread for each sender and receive TCP packets (messages) -->
 
-<img src="https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/simple-wasm-receiver.png" width="40%">
+<!-- <img src="https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/simple-wasm-receiver.png" width="40%"> -->
 
 ## Requirements
 1. Rust
@@ -62,15 +61,15 @@ $ killall receiver
 $ killall wasmer
 
 # invoke benchmark programs of native implementation
-# When you run this program, the following directories and  files are output:
+# When you run this program, the following directories and files are output:
 # log/native/LOG_DIR/
-# 40 log files
+# log/native/LOG_DIR/40 log files
 $ ./script/test_native.sh
 
 # invoke benchmark programs of wasm implementation
-# When you run this program, the following directories and  files are output:
+# When you run this program, the following directories and files are output:
 # log/wasm/LOG_DIR/
-# 40 log files
+# log/wasm/LOG_DIR/40 log files
 $ ./script/test_wasmer.sh
 
 # LOG_DIR format: YearMonthDate-HourMinuteSecond
