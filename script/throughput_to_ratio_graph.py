@@ -8,6 +8,7 @@ import datetime
 import pandas as pd
 import argparse
 
+# get argument
 parser = argparse.ArgumentParser()
 parser.add_argument('native_throughput_file')
 parser.add_argument('wasm_throughput_file')
@@ -16,12 +17,15 @@ args = parser.parse_args()
 native_throughput_file = args.native_throughput_file
 wasm_throughput_file = args.wasm_throughput_file
 
+# change throughput file to dataframe
 df_native = pd.read_csv(native_throughput_file, skipinitialspace=True)
 df_wasm = pd.read_csv(wasm_throughput_file, skipinitialspace=True)
 
+# change throughput in dataframe to throughput ratio
 df_native_ratio = df_native['throughput'] / df_native['throughput'][0]
 df_wasm_ratio = df_wasm['throughput'] / df_wasm['throughput'][0]
 
+# prepare label for Horizontal Axis
 sender_num_label = []
 
 for i in range(40):
@@ -33,6 +37,7 @@ for i in range(40):
 
 x = np.arange(len(sender_num_label))
 
+# plot ratio graph
 fig, ax = plt.subplots(layout='constrained')
 
 df_native_ratio.plot(y='throughput', x=x, ax=ax, label="Native", marker='o', color='red')
