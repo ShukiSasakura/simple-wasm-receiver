@@ -5,26 +5,20 @@ This program is explaining this phenomenon.
 <img src="https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/throughput-ratio.png" width="40%">
 
 This figure shows the ratio of throughput when the benchmark was run with each thread count from 1 to 40 to the throughput with a thread count of 1.
-The conditions are as follows:
+The benchmark conditions are as follows:
++ Send message (TCP packet) from sender to receiver
 + Increase the number of senders from 1 to 40
-+ For measurements with each number of senders, send 10,000 messages to the receiver
++ Receive message with a dedicated thread for each sender
++ Send 10,000 messages to the receiver for measurements with each number of senders
 
-This program continuously sends TCP packets to the receiver while increasing the number of senders from 1 to 40.
-The receiver creates a dedicated thread for each sender.
 The throughput (msg/s) is calculated from the time from the first message received to the last message received.
 
 ## Programs
 | Directory Name | Description |
 |:---------------|:------------|
 | receiver       | A program that receives messages and returns acks |
-| script         | Scripts for performance measurement |
+| script         | Scripts for benchmark |
 | sender         | A program that send messages and receive acks |
-
-<!-- ## Description for Programs -->
-<!-- + Continuously send TCP packets to receiver while increasing sender from 1 to 40 -->
-<!-- + Receiver invokes dedicaded thread for each sender and receive TCP packets (messages) -->
-
-<!-- <img src="https://github.com/ShukiSasakura/simple-wasm-receiver/blob/main/image/simple-wasm-receiver.png" width="40%"> -->
 
 ## Requirements
 1. Rust
@@ -61,13 +55,13 @@ $ killall receiver
 $ killall wasmer
 
 # invoke benchmark programs of native implementation
-# When you run this program, the following directories and files are output:
+# When you run this program, the following directory and files are output:
 # log/native/LOG_DIR/
 # log/native/LOG_DIR/40 log files
 $ ./script/test_native.sh
 
 # invoke benchmark programs of wasm implementation
-# When you run this program, the following directories and files are output:
+# When you run this program, the following directory and files are output:
 # log/wasm/LOG_DIR/
 # log/wasm/LOG_DIR/40 log files
 $ ./script/test_wasmer.sh
@@ -77,23 +71,29 @@ $ ./script/test_wasmer.sh
 ```
 6. Calculate throughput
 ```
-$ ./calculate_throughput_all.sh ../log/native/LOG_DIR
-$ ./calculate_throughput_all.sh ../log/wasm/LOG_DIR
-# LOG_DIR format: YearMonthDate-HourMinuteSecond
-# example: 20240807-143627
+# When you run these programs, the following files are output:
+# log/native/LOG_DIR/throughput.stat
+# log/wasm/LOG_DIR/throughput.stat
+$ ./script/calculate_throughput.py ../log/native/LOG_DIR
+$ ./script/calculate_throughput.py ../log/wasm/LOG_DIR
 ```
 7. ( Calculate average throughputs in LOG_DIRs )
 ```
+# When you run these programs, the following files are output:
+# log/native/throughput_average.stat
+# log/wasm/throughput_average.stat
 $ ./calculate_average_throughputs.sh ../log/native/
 $ ./calculate_average_throughputs.sh ../log/wasm/
 ```
 8. Make ratio graph
+```
+# When you run this program, the following file are output:
+# GRAPH_FILE.pdf
+# GRAPH_FILE format: YearMonthDate-HourMinuteSecond
+# example: 20240807-143627.pdf
 
-make a graph of the logs in a single measurement
-```
+# make a graph of the logs in a single measurement
 $ ./throughput_to_ratio_graph.py ../log/native/LOG_DIR/throughput.stat ../log/wasm/LOG_DIR/throughput.stat
-```
-make an average graph of multiple measurement
-```
+# make an average graph of multiple measurement
 $ ./throughput_to_ratio_graph.py ../log/native/throughput_average.stat ../log/wasm/throughput_average.stat
 ```
