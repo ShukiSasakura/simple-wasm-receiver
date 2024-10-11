@@ -1,11 +1,15 @@
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
 use std::time::{Duration, Instant};
+use std::os::fd::*;
 
 fn main() -> std::io::Result<()> {
-    let listener = TcpListener::bind("127.0.0.1:8000").unwrap();
-    let start_time = Instant::now();
+    // for native, wasmer
+    // let listener = TcpListener::bind("127.0.0.1:8000").unwrap();
+    // for wasmtime
+    let listener = unsafe { TcpListener::from_raw_fd(3) };
 
+    let start_time = Instant::now();
     println!("id,time");
     loop {
         let stream = loop {
