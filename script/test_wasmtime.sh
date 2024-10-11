@@ -10,6 +10,7 @@ mkdir -p $LOGDIR
 for TOTAL_N_SENDERS in $(seq 1 40)
 do
 
+    echo "start sender num $TOTAL_N_SENDERS"
     killall wasmtime
 
     num_messages=$((10000 / TOTAL_N_SENDERS))
