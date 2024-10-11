@@ -74,16 +74,16 @@ $ ./script/test_wasmer.sh
 # When you run these programs, the following files are output:
 # log/native/LOG_DIR/throughput.stat
 # log/wasm/LOG_DIR/throughput.stat
-$ ./script/calculate_throughput.py ../log/native/LOG_DIR
-$ ./script/calculate_throughput.py ../log/wasm/LOG_DIR
+$ ./script/calculate_throughput.py log/native/LOG_DIR
+$ ./script/calculate_throughput.py log/wasm/LOG_DIR
 ```
 7. ( Calculate average throughputs in LOG_DIRs )
 ```
 # When you run these programs, the following files are output:
 # log/native/throughput_average.stat
 # log/wasm/throughput_average.stat
-$ ./calculate_average_throughputs.sh ../log/native/
-$ ./calculate_average_throughputs.sh ../log/wasm/
+$ ./script/calculate_average_throughputs.sh log/native/
+$ ./script/calculate_average_throughputs.sh log/wasm/
 ```
 8. Make ratio graph
 ```
@@ -93,7 +93,7 @@ $ ./calculate_average_throughputs.sh ../log/wasm/
 # example: 20240807-143627.pdf
 
 # make a graph of the logs in a single measurement
-$ ./throughput_to_ratio_graph.py ../log/native/LOG_DIR/throughput.stat ../log/wasm/LOG_DIR/throughput.stat
+$ ./script/throughput_to_ratio_graph.py log/native/LOG_DIR/throughput.stat log/wasm/LOG_DIR/throughput.stat
 # make an average graph of multiple measurement
-$ ./throughput_to_ratio_graph.py ../log/native/throughput_average.stat ../log/wasm/throughput_average.stat
+$ ./script/throughput_to_ratio_graph.py log/native/throughput_average.stat log/wasm/throughput_average.stat
 ```
