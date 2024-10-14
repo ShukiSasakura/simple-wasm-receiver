@@ -13,17 +13,20 @@ do
     echo "start sender num $TOTAL_N_SENDERS"
     killall wasmtime
 
-    num_messages=$((10000 / TOTAL_N_SENDERS))
+    # message num that a receiver receive
+    receive_messages_num=$((10000 - (10000 % TOTAL_N_SENDERS)))
+    # message num that a sender send
+    send_messages_num=$((10000 / TOTAL_N_SENDERS))
 
-    # invoke receiver
+    # invoke a receiver
     wasmtime -S tcplisten="127.0.0.1:8000" -S threads $TOPDIR/receiver/target/wasm32-wasip1-threads/release/receiver.wasm \
-    > $LOGDIR/$date-$TOTAL_N_SENDERS-$num_messages.log&
+    > $LOGDIR/$date-$TOTAL_N_SENDERS-$receive_messages_num.log&
     sleep 1
 
-    # invoke sender
+    # invoke senders
     for i in $(seq 1 $TOTAL_N_SENDERS)
     do
-        $TOPDIR/sender/target/release/sender -m $num_messages&
+        $TOPDIR/sender/target/release/sender -m $send_messages_num&
     done
 
     sleep 4
