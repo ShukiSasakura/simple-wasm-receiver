@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+
+from matplotlib import pyplot as plt
+from matplotlib import ticker
+import numpy as np
+import pypdf
+import datetime
+import pandas as pd
+import argparse
+
+from matplotlib import rcParams
+rcParams['font.family'] = 'sans-serif'
+rcParams['font.sans-serif'] = ['Hiragino Maru Gothic Pro', 'Yu Gothic', 'Meirio', 'Takao', 'IPAexGothic', 'IPAPGothic', 'VL PGothic', 'Noto Sans CJK JP']
+
+# get argument
+parser = argparse.ArgumentParser()
+parser.add_argument('native_throughput_file')
+parser.add_argument('wasmer_throughput_file')
+parser.add_argument('wasmtime_throughput_file')
+args = parser.parse_args()
+
+native_throughput_file = args.native_throughput_file
+wasmer_throughput_file = args.wasmer_throughput_file
+wasmtime_throughput_file = args.wasmtime_throughput_file
+
+# change throughput file to dataframe
+df_native = pd.read_csv(native_throughput_file, skipinitialspace=True)
+df_wasmer = pd.read_csv(wasmer_throughput_file, skipinitialspace=True)
+df_wasmtime = pd.read_csv(wasmtime_throughput_file, skipinitialspace=True)
+
+# change throughput in dataframe to throughput ratio
+# df_native_ratio = df_native['throughput'] / df_native['throughput'][0]
+# df_wasm_ratio = df_wasm['throughput'] / df_wasm['throughput'][0]
+
+df_native = df_native['throughput']
+df_wasmer = df_wasmer['throughput']
+df_wasmtime = df_wasmtime['throughput']
+
+# prepare label for Horizontal Axis
+sender_num_label = []
+
+for i in range(40):
+    if (i + 1) % 5 == 0:
+        label = i + 1
+        sender_num_label.append(label)
+    else:
+        sender_num_label.append('')
+
+x = np.arange(len(sender_num_label))
+
+# plot ratio graph
+fig, ax = plt.subplots(layout='constrained')
+
+df_native.plot(y='throughput', x=x, ax=ax, label="Native", marker='o', color='red')
+df_wasmer.plot(y='throughput', x=x, ax=ax, label="Wasmer", marker='^', color='green')
+df_wasmtime.plot(y='throughput', x=x, ax=ax, label="Wasmtime", marker='s', color='blue')
+
+h1, l1 = ax.get_legend_handles_labels()
+
+ax.grid()
+ax.set_axisbelow(True)
+
+ax.set_xlabel('センダ数 (スレッド数)')
+ax.set_ylabel('スループット (msg/s)')
+
+ax.set_xticks(x, sender_num_label)
+
+ax.set_ylim(0, df_wasmtime.max() * 1.1)
+
+ax.legend(h1, l1, loc='upper left', ncols=2)
+
+plt.ticklabel_format(style='plain',axis='y')
+
+date = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+file_name = f'{date}.pdf'
+
+plt.savefig(file_name)
+plt.close()
