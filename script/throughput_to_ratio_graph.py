@@ -8,6 +8,10 @@ import datetime
 import pandas as pd
 import argparse
 
+from matplotlib import rcParams
+rcParams['font.family'] = 'sans-serif'
+rcParams['font.sans-serif'] = ['Hiragino Maru Gothic Pro', 'Yu Gothic', 'Meirio', 'Takao', 'IPAexGothic', 'IPAPGothic', 'VL PGothic', 'Noto Sans CJK JP']
+
 # get argument
 parser = argparse.ArgumentParser()
 parser.add_argument('native_throughput_file')
@@ -22,8 +26,11 @@ df_native = pd.read_csv(native_throughput_file, skipinitialspace=True)
 df_wasm = pd.read_csv(wasm_throughput_file, skipinitialspace=True)
 
 # change throughput in dataframe to throughput ratio
-df_native_ratio = df_native['throughput'] / df_native['throughput'][0]
-df_wasm_ratio = df_wasm['throughput'] / df_wasm['throughput'][0]
+# df_native_ratio = df_native['throughput'] / df_native['throughput'][0]
+# df_wasm_ratio = df_wasm['throughput'] / df_wasm['throughput'][0]
+
+df_native = df_native['throughput']
+df_wasm = df_wasm['throughput']
 
 # prepare label for Horizontal Axis
 sender_num_label = []
@@ -40,20 +47,23 @@ x = np.arange(len(sender_num_label))
 # plot ratio graph
 fig, ax = plt.subplots(layout='constrained')
 
-df_native_ratio.plot(y='throughput', x=x, ax=ax, label="Native", marker='o', color='red')
-df_wasm_ratio.plot(y='throughput', x=x, ax=ax, label="Wasmer", marker='^', color='green')
+# df_native_ratio.plot(y='throughput', x=x, ax=ax, label="Native", marker='o', color='red')
+# df_wasm_ratio.plot(y='throughput', x=x, ax=ax, label="Wasmer", marker='^', color='green')
+
+df_native.plot(y='throughput', x=x, ax=ax, label="Native", marker='o', color='red')
+df_wasm.plot(y='throughput', x=x, ax=ax, label="Wasmer", marker='^', color='green')
 
 h1, l1 = ax.get_legend_handles_labels()
 
 ax.grid()
 ax.set_axisbelow(True)
 
-ax.set_xlabel('Sender num (Thread num)')
-ax.set_ylabel('Throughput ratio')
+ax.set_xlabel('センダ数 (スレッド数)')
+ax.set_ylabel('スループット (msg/s)')
 
 ax.set_xticks(x, sender_num_label)
 
-ax.set_ylim(0, df_native_ratio.max() * 1.1)
+ax.set_ylim(0, df_wasm.max() * 1.1)
 
 ax.legend(h1, l1, loc='upper left', ncols=2)
 

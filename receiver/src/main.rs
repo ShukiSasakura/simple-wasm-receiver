@@ -4,9 +4,9 @@ use std::time::{Duration, Instant};
 use std::os::fd::*;
 
 fn main() -> std::io::Result<()> {
-    // for native, wasmer
-    // let listener = TcpListener::bind("127.0.0.1:8000").unwrap();
-    // for wasmtime
+    // bind for native, wasmer
+    // let listener = TcpListener::bind("127.0.0.1:5555").unwrap();
+    // bind for wasmtime
     let listener = unsafe { TcpListener::from_raw_fd(3) };
 
     let start_time = Instant::now();
@@ -52,10 +52,10 @@ fn receive_msg(mut stream: TcpStream, start_time: &Instant) -> std::io::Result<(
     }
 
     records.iter()
-          .enumerate()
-          .for_each(|(num, record)|
-                    println!("{},{}", num, record)
-                    );
+        .enumerate()
+        .for_each(|(num, record)|
+            println!("{},{}", num, record)
+        );
 
     Ok(())
 }

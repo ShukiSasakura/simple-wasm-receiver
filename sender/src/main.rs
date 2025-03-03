@@ -5,7 +5,7 @@ use std::net::TcpStream;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args{
-    #[arg(short, long, default_value_t = String::from("127.0.0.1:8000"))]
+    #[arg(short, long, default_value_t = String::from("127.0.0.1:5555"))]
     distination_address: String,
 
     #[arg(short, long, default_value_t = 100000)]
@@ -18,10 +18,7 @@ fn main() -> std::io::Result<()>{
     let distination_address = args.distination_address;
     let msg_num = args.msg_num;
 
-    let mut stream = match TcpStream::connect(distination_address) {
-        Ok(stream) => stream,
-        Err(e) => return Err(e)
-    };
+    let mut stream = TcpStream::connect(distination_address)?;
 
     let mut msg: [u8; 1024] = [1; 1024];
     let mut ack: [u8; 1024] = [0; 1024];

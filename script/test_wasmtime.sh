@@ -19,8 +19,7 @@ do
     send_messages_num=$((10000 / TOTAL_N_SENDERS))
 
     # invoke a receiver
-    wasmtime -S tcplisten="127.0.0.1:8000" -S threads $TOPDIR/receiver/target/wasm32-wasip1-threads/release/receiver.wasm \
-    > $LOGDIR/$date-$TOTAL_N_SENDERS-$receive_messages_num.log&
+    wasmtime -S tcplisten="127.0.0.1:5555" -S threads $TOPDIR/receiver/target/wasm32-wasip1-threads/release/receiver.wasm > $LOGDIR/$date-$TOTAL_N_SENDERS-$receive_messages_num.log&
     sleep 1
 
     # invoke senders
